@@ -11,5 +11,11 @@ namespace ManagerConsoleApp.DeviceTypes
         {
 
         }
+        public Door(Enum type, int deviceID, string name)
+        {
+            Type = type;
+            DeviceID = deviceID;
+            Name = name;
+        }
     }
 }

@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static ManagerConsoleApp.DeviceTypes.Speaker;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ManagerConsoleApp.DeviceTypes
 {
     internal class CardReader : IndividualDevice
     {
         public string AccessCardNumber;
+        public CardReader(Enum type, int deviceID, string name, string accessCardNumber)
+        {
+            Type = type;
+            DeviceID = deviceID;
+            Name = name;
+            AccessCardNumber = accessCardNumber;
+        }
 
-        private void AcessCardValidation(string acessCardNumber)
+        public void AcessCardValidation(string acessCardNumber)
         {
             if (acessCardNumber.Length % 2 == 0 && acessCardNumber.Length <= 16 && verifyHexadecimal(acessCardNumber))
             {
-                //something
+                AccessCardNumber = ReserveBytesAndPad(acessCardNumber);
             }
 
         }
@@ -34,8 +43,7 @@ namespace ManagerConsoleApp.DeviceTypes
 
         private bool verifyHexadecimal(string acessCardNumber)
         {
-
-            return false;
+            return System.Text.RegularExpressions.Regex.IsMatch(acessCardNumber, @"\A\b[0-9a-fA-F]+\b\Z");
         }
     }
 }

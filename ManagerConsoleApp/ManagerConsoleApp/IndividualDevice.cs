@@ -6,13 +6,9 @@ namespace ManagerConsoleApp
 {
     internal class IndividualDevice
     {
-        public string Type;
+        public Enum Type;
         public int DeviceID;
         public string Name;
 
-        public virtual String GetCurrentState()
-        {
-            return "";
-        }
     }
 }

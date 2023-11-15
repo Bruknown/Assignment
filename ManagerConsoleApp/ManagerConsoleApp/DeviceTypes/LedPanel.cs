@@ -8,10 +8,12 @@ namespace ManagerConsoleApp.DeviceTypes
     {
         public String Message;
 
-        public LedPanel()
+        public LedPanel(Enum type, int deviceID, string name, string message)
         {
+            Type = type;
+            DeviceID = deviceID;
+            Name = name;
+            Message = message;
         }
-
-
     }
 }

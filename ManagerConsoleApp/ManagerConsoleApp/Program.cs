@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace ManagerConsoleApp
 {
@@ -6,7 +7,11 @@ namespace ManagerConsoleApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Root ShoppingMall = new Root();
+            foreach (DeviceGroup group in ShoppingMall.DeviceGroupList)
+            {
+                group.printGroup();
+            }
         }
     }
 
