@@ -8,7 +8,7 @@ namespace ManagerConsoleApp
         static void Main(string[] args)
         {
             Root ShoppingMall = new Root();
-            foreach (DeviceGroup group in ShoppingMall.DeviceGroupList)
+            foreach (DeviceGroup group in Root.DeviceGroupList)
             {
                 group.printGroup();
             }

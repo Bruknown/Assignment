@@ -9,6 +9,5 @@ namespace ManagerConsoleApp
         public Enum Type;
         public int DeviceID;
         public string Name;
-
     }
 }

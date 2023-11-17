@@ -28,10 +28,9 @@ namespace ManagerConsoleApp.DeviceTypes
 
         private string ReserveBytesAndPad(string acessCardNumber)
         {
-            string product = "";
             char[] charArray = acessCardNumber.ToCharArray();
             Array.Reverse(charArray);
-            product = new string(charArray);
+            string product = new string(charArray);
 
             while (product.Length < 16)
             {
