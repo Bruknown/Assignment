@@ -10,14 +10,15 @@ namespace ManagerConsoleApp
         public List<IndividualDevice> IndividualDevices;
         public String DeviceGroupName;
         public short DeviceGroupID;
+        public List<string> modificationHistory;
 
 
-
-        public DeviceGroup(List<IndividualDevice> devices, string deviceGroupName, short deviceGroupID)
+        public DeviceGroup(List<IndividualDevice> devices, string deviceGroupName, short deviceGroupID, List<string> groupHistory)
         {
             IndividualDevices = devices;
             DeviceGroupName = deviceGroupName;
             DeviceGroupID = deviceGroupID;
+            modificationHistory = groupHistory;
         }
         public void modifyDevice(IndividualDevice deviceToChange)
         {
@@ -42,7 +43,7 @@ namespace ManagerConsoleApp
                     {
                         case 1:
                             Console.WriteLine("Please insert a new name for the Device");
-                            speaker.Name = Console.ReadLine();
+                            speaker.changeDeviceName(Console.ReadLine());
                             break;
                         case 2:
                             isValid = false;
@@ -53,10 +54,10 @@ namespace ManagerConsoleApp
                                 if (float.TryParse(decision, out float result))
                                     isValid = (float.Parse(decision) >= 0 && float.Parse(decision) <= 1)? true : false;
                             }
-                            speaker.Volume = float.Parse(decision);
+                            speaker.changeVolume(float.Parse(decision));
                             break;
                         case 3:
-                            speaker.Sound = soundStateDefine();
+                            speaker.changeSoundType(soundStateDefine());
                             break;
                     }
 
@@ -76,11 +77,11 @@ namespace ManagerConsoleApp
                     {
                         case 1:
                             Console.WriteLine("Please insert a new name for the device");
-                            panel.Name = Console.ReadLine();
+                            panel.changeDeviceName(Console.ReadLine());
                             break;
                         case 2:
                             Console.WriteLine("Please insert a new message for the device");
-                            panel.Message = Console.ReadLine();
+                            panel.changeMessage(Console.ReadLine());
                             break;
                     }
 
@@ -100,7 +101,7 @@ namespace ManagerConsoleApp
                     {
                         case 1:
                             Console.WriteLine("Please insert a new name for this device");
-                            reader.Name = Console.ReadLine();
+                            reader.changeDeviceName(Console.ReadLine());
                             break;
                         case 2:
                             Console.WriteLine("please insert a new code for the Card Reader");
@@ -123,7 +124,7 @@ namespace ManagerConsoleApp
                     {
                         case 1:
                             Console.WriteLine("Please insert a new name for this device");
-                            door.Name = Console.ReadLine();
+                            door.changeDeviceName(Console.ReadLine());
                             break;
                         case 2:
                             Console.WriteLine("Please specify the new door status");
@@ -156,27 +157,23 @@ namespace ManagerConsoleApp
             switch (int.Parse(deviceChoice))
             {
                 case 1:
-                    IndividualDevices.Add(new Speaker(DeviceTypes.Speaker, Root.currentDeviceQuantity+1, deviceName, soundStateDefine(), 0f));
+                    IndividualDevices.Add(new Speaker(DeviceTypes.Speaker, Root.currentDeviceIdIndex+1, deviceName, soundStateDefine(), 0f));
                     break;
                 case 2:
                     Console.WriteLine("Please insert the message in display for the LED Panel: ");
                     string message = Console.ReadLine();
-                    IndividualDevices.Add(new LedPanel(DeviceTypes.LedPanel, Root.currentDeviceQuantity + 1, deviceName, message));
+                    IndividualDevices.Add(new LedPanel(DeviceTypes.LedPanel, Root.currentDeviceIdIndex + 1, deviceName, message));
                     break;
                 case 3:
-                    IndividualDevices.Add(new Door(DeviceTypes.Door, Root.currentDeviceQuantity + 1, deviceName));
+                    IndividualDevices.Add(new Door(DeviceTypes.Door, Root.currentDeviceIdIndex + 1, deviceName, Door.PossibleStates.Locked));
                     break;
                 case 4:
                     Console.WriteLine("Please provide the Card Reader with a Hexadecimal code");
                     string code = Console.ReadLine();
-                    IndividualDevices.Add(new CardReader(DeviceTypes.CardReader, Root.currentDeviceQuantity + 1, deviceName, code));
+                    IndividualDevices.Add(new CardReader(DeviceTypes.CardReader, Root.currentDeviceIdIndex + 1, deviceName, code));
                     break;
 
             }
-
-
-
-
         }
 
         private Speaker.soundStates soundStateDefine()

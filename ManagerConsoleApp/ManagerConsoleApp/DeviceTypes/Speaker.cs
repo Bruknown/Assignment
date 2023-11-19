@@ -16,6 +16,24 @@ namespace ManagerConsoleApp.DeviceTypes
             Name = name;
             Sound = soundState;
             Volume = volume;
+            modificationHistory = new List<string>();
+
+        }
+
+        public void changeSoundType(soundStates newSoundType)
+        {
+            string modificationString = "Changed Sound Type from " + Sound.ToString() + " INTO " + newSoundType.ToString();
+            modificationHistory.Add(modificationString);
+            Console.WriteLine(modificationString);
+            Sound = newSoundType;
+        }
+
+        public void changeVolume(float newVolume)
+        {
+            string modificationString = "Changed volume from: " + Volume + " INTO " + newVolume;
+            modificationHistory.Add(modificationString);
+            Console.WriteLine(modificationString);
+            Volume = newVolume;
         }
 
         public enum soundStates

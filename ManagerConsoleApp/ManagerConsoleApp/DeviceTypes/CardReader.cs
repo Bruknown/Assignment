@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static ManagerConsoleApp.DeviceTypes.Speaker;
 using static System.Net.Mime.MediaTypeNames;
@@ -15,18 +16,36 @@ namespace ManagerConsoleApp.DeviceTypes
             DeviceID = deviceID;
             Name = name;
             AccessCardNumber = accessCardNumber;
+            modificationHistory = new List<string>();
+
+        }
+
+        public void changeCardNumber(string newCardNumberInput)
+        {
+            string modificationString = "Changed ACCESS CARD NUMBER from: " + AccessCardNumber + " INTO " + newCardNumberInput;
+            modificationHistory.Add(modificationString);
+            Console.WriteLine(modificationString);
+            AccessCardNumber = newCardNumberInput;
         }
 
         public void AcessCardValidation(string acessCardNumber)
         {
-            if (acessCardNumber.Length % 2 == 0 && acessCardNumber.Length <= 16 && verifyHexadecimal(acessCardNumber))
+            string formattedAcessCard = RemoveWhitespace(acessCardNumber).ToUpper();
+            if (formattedAcessCard.Length % 2 == 0 && formattedAcessCard.Length <= 16 && verifyHexadecimal(formattedAcessCard))
             {
-                AccessCardNumber = ReserveBytesAndPad(acessCardNumber);
+                ReserveBytesAndPad(formattedAcessCard);
             }
 
         }
 
-        private string ReserveBytesAndPad(string acessCardNumber)
+        private string RemoveWhitespace(string stringToClear)
+        {
+            return new string(stringToClear.ToCharArray()
+                .Where(c => !Char.IsWhiteSpace(c))
+                .ToArray());
+        }
+
+        private void ReserveBytesAndPad(string acessCardNumber)
         {
             char[] charArray = acessCardNumber.ToCharArray();
             Array.Reverse(charArray);
@@ -37,7 +56,7 @@ namespace ManagerConsoleApp.DeviceTypes
                 product = "0" + product;
             }
 
-            return product;
+            changeCardNumber(product);
         }
 
         private bool verifyHexadecimal(string acessCardNumber)

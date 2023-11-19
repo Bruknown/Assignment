@@ -9,5 +9,14 @@ namespace ManagerConsoleApp
         public Enum Type;
         public int DeviceID;
         public string Name;
+        public List<string> modificationHistory;
+
+        public void changeDeviceName(string newName)
+        {
+            string modificationString = "Changed device name from: " + Name + " INTO " + newName;
+            modificationHistory.Add(modificationString);
+            Console.WriteLine(modificationString);
+            Name = newName;
+        }
     }
 }

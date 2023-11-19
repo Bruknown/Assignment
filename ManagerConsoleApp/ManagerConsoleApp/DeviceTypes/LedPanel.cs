@@ -14,6 +14,15 @@ namespace ManagerConsoleApp.DeviceTypes
             DeviceID = deviceID;
             Name = name;
             Message = message;
+            modificationHistory = new List<string>();
+        }
+
+        public void changeMessage(string newMessage)
+        {
+            string modificationString = "Changed LED Display message from: " + Message + " INTO " + newMessage;
+            modificationHistory.Add(modificationString);
+            Console.WriteLine(modificationString);
+            Message = newMessage;
         }
     }
 }
