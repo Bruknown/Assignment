@@ -24,16 +24,20 @@ namespace ManagerConsoleApp.DeviceTypes
         {
             string modificationString = "Changed Sound Type from " + Sound.ToString() + " INTO " + newSoundType.ToString();
             modificationHistory.Add(modificationString);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(modificationString);
             Sound = newSoundType;
+            Console.ResetColor();
         }
 
         public void changeVolume(float newVolume)
         {
             string modificationString = "Changed volume from: " + Volume + " INTO " + newVolume;
             modificationHistory.Add(modificationString);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(modificationString);
             Volume = newVolume;
+            Console.ResetColor();
         }
 
         public enum soundStates

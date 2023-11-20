@@ -14,9 +14,11 @@ namespace ManagerConsoleApp
         public void changeDeviceName(string newName)
         {
             string modificationString = "Changed device name from: " + Name + " INTO " + newName;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             modificationHistory.Add(modificationString);
             Console.WriteLine(modificationString);
             Name = newName;
+            Console.ResetColor();
         }
     }
 }

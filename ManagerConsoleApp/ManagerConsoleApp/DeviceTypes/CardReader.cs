@@ -24,8 +24,10 @@ namespace ManagerConsoleApp.DeviceTypes
         {
             string modificationString = "Changed ACCESS CARD NUMBER from: " + AccessCardNumber + " INTO " + newCardNumberInput;
             modificationHistory.Add(modificationString);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(modificationString);
             AccessCardNumber = newCardNumberInput;
+            Console.ResetColor();
         }
 
         public void AcessCardValidation(string acessCardNumber)

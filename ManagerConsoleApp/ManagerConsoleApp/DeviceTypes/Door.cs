@@ -6,7 +6,6 @@ namespace ManagerConsoleApp.DeviceTypes
 {
     internal class Door : IndividualDevice
     {
-        public bool Locked, Open, OpenForTooLong, OpenedForcibly;
         public PossibleStates State;
         
         [Flags]
@@ -30,7 +29,9 @@ namespace ManagerConsoleApp.DeviceTypes
         {
             string changeHistoryString = "Door status changed from: " + State + " INTO " + newState;
             modificationHistory.Add(changeHistoryString);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(changeHistoryString);
+            Console.ResetColor();
             State = newState;
         }
     }

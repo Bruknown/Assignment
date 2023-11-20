@@ -32,12 +32,13 @@ namespace ManagerConsoleApp
                     Console.WriteLine("1. Speaker Name");
                     Console.WriteLine("2. Speaker Volume");
                     Console.WriteLine("3. Speaker Type");
+                    Console.WriteLine("4. Return");
                     isValid = false;
                     while (!isValid)
                     {
                         decision = Console.ReadLine();
                         if (int.TryParse(decision, out int result))
-                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 4) ? true : false;
+                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 5) ? true : false;
                     }
                     switch (int.Parse(decision))
                     {
@@ -59,6 +60,8 @@ namespace ManagerConsoleApp
                         case 3:
                             speaker.changeSoundType(soundStateDefine());
                             break;
+                        case 4:
+                            return;
                     }
 
                     break;
@@ -66,12 +69,13 @@ namespace ManagerConsoleApp
                     LedPanel panel = deviceToChange as LedPanel;
                     Console.WriteLine("1. LED Panel Name");
                     Console.WriteLine("2. LED Panel Message");
+                    Console.WriteLine("3. Return");
                     isValid = false;
                     while (!isValid)
                     {
                         decision = Console.ReadLine();
                         if (int.TryParse(decision, out int result))
-                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 3) ? true : false;
+                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 4) ? true : false;
                     }
                     switch (int.Parse(decision))
                     {
@@ -83,6 +87,8 @@ namespace ManagerConsoleApp
                             Console.WriteLine("Please insert a new message for the device");
                             panel.changeMessage(Console.ReadLine());
                             break;
+                        case 3:
+                            return;
                     }
 
                     break;
@@ -90,12 +96,13 @@ namespace ManagerConsoleApp
                     CardReader reader = deviceToChange as CardReader;
                     Console.WriteLine("1. Card Reader Name");
                     Console.WriteLine("2. Card Reader Code");
+                    Console.WriteLine("3. Return");
                     isValid = false;
                     while (!isValid)
                     {
                         decision = Console.ReadLine();
                         if (int.TryParse(decision, out int result))
-                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 3) ? true : false;
+                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 4) ? true : false;
                     }
                     switch(int.Parse(decision))
                     {
@@ -107,12 +114,15 @@ namespace ManagerConsoleApp
                             Console.WriteLine("please insert a new code for the Card Reader");
                             reader.AcessCardValidation(Console.ReadLine());
                             break;
+                        case 3:
+                            return;
                     }
                     break;
                 case DeviceTypes.Door:
                     Door door = deviceToChange as Door;
                     Console.WriteLine("1. Door Name");
                     Console.WriteLine("2. Door Status");
+                    Console.WriteLine("3. Return");
                     isValid = false;
                     while (!isValid)
                     {
@@ -128,13 +138,40 @@ namespace ManagerConsoleApp
                             break;
                         case 2:
                             Console.WriteLine("Please specify the new door status");
-
+                            Console.WriteLine("1. Locked");
+                            Console.WriteLine("2. Open");
+                            Console.WriteLine("3. Open For Too Long");
+                            Console.WriteLine("4. Broken");
+                            isValid = false;
+                            while (!isValid)
+                            {
+                                decision = Console.ReadLine();
+                                if (int.TryParse(decision, out int result))
+                                    isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 5) ? true : false;
+                            }
+                            switch (int.Parse(decision))
+                            {
+                                case 1:
+                                    door.changeDoorState(Door.PossibleStates.Locked);
+                                    break;
+                                case 2:
+                                    door.changeDoorState(Door.PossibleStates.Open);
+                                    break;
+                                case 3:
+                                    door.changeDoorState(Door.PossibleStates.OpenForTooLong);
+                                    break;
+                                case 4:
+                                    door.changeDoorState(Door.PossibleStates.OpenedForcibly);
+                                    break;
+                            }
                             break;
+                        case 3:
+                            return;
                     }
                     break;
             }
         }
-        public void addDevice()
+        public void addDeviceByUser()
         {
             string deviceChoice = "";
             bool correctInput = false;
@@ -157,25 +194,35 @@ namespace ManagerConsoleApp
             switch (int.Parse(deviceChoice))
             {
                 case 1:
-                    IndividualDevices.Add(new Speaker(DeviceTypes.Speaker, Root.currentDeviceIdIndex+1, deviceName, soundStateDefine(), 0f));
+                    addDevice(new Speaker(DeviceTypes.Speaker, ++Root.currentDeviceIdIndex, deviceName, soundStateDefine(), 0f));
                     break;
                 case 2:
                     Console.WriteLine("Please insert the message in display for the LED Panel: ");
                     string message = Console.ReadLine();
-                    IndividualDevices.Add(new LedPanel(DeviceTypes.LedPanel, Root.currentDeviceIdIndex + 1, deviceName, message));
+                    addDevice(new LedPanel(DeviceTypes.LedPanel, ++Root.currentDeviceIdIndex, deviceName, message));
                     break;
                 case 3:
-                    IndividualDevices.Add(new Door(DeviceTypes.Door, Root.currentDeviceIdIndex + 1, deviceName, Door.PossibleStates.Locked));
+                    addDevice(new Door(DeviceTypes.Door, ++Root.currentDeviceIdIndex, deviceName, Door.PossibleStates.Locked));
                     break;
                 case 4:
                     Console.WriteLine("Please provide the Card Reader with a Hexadecimal code");
                     string code = Console.ReadLine();
-                    IndividualDevices.Add(new CardReader(DeviceTypes.CardReader, Root.currentDeviceIdIndex + 1, deviceName, code));
+                    addDevice(new CardReader(DeviceTypes.CardReader, ++Root.currentDeviceIdIndex, deviceName, code));
                     break;
 
             }
         }
 
+        public void addDevice(IndividualDevice newDevice)
+        {
+            string modificationString = "Added device " + newDevice.Name + " of ID: " + newDevice.DeviceID + " into group: " + DeviceGroupName;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(modificationString);
+            modificationHistory.Add(modificationString);
+            IndividualDevices.Add(newDevice);
+            Console.ResetColor();
+        }
+        
         private Speaker.soundStates soundStateDefine()
         {
             string speakerFunction = "";
@@ -247,7 +294,13 @@ namespace ManagerConsoleApp
             {
                 if (device.DeviceID == deviceID)
                 {
+                    string modificationString = "Removed " + device.Type.ToString() + " of ID: " + device.DeviceID + " from device group: " + DeviceGroupName;
+                    modificationHistory.Add(modificationString);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(modificationString);
+                    Console.ResetColor();
                     IndividualDevices.Remove(device);
+                    return;
                 }
             }
         }

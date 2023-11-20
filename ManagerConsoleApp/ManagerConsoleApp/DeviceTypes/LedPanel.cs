@@ -21,7 +21,9 @@ namespace ManagerConsoleApp.DeviceTypes
         {
             string modificationString = "Changed LED Display message from: " + Message + " INTO " + newMessage;
             modificationHistory.Add(modificationString);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(modificationString);
+            Console.ResetColor();
             Message = newMessage;
         }
     }
