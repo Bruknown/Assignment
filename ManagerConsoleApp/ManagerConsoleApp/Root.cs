@@ -25,29 +25,18 @@ namespace ManagerConsoleApp
             initialInsert();
             initialModifications();
         }
-        public void changeDeviceGroupForDevice(int deviceGroupOrigin, int deviceGroupDestination, IndividualDevice deviceToMove)
+
+        public static void printTree()
         {
-            foreach (DeviceGroup deviceGroup in DeviceGroupList)
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("================PRINTING TREE=================");
+            foreach(DeviceGroup devicegroup in DeviceGroupList)
             {
-                if (deviceGroup.DeviceGroupID == deviceGroupOrigin)
-                {
-                    deviceGroup.removeDevice(deviceToMove.DeviceID);
-                    deviceGroup.modificationHistory.Add("Changed Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " to Device group of ID: " + deviceGroupDestination);
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Changed Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " to Device group of ID: " + deviceGroupDestination);
-                    Console.ResetColor();                
-                }
-                if (deviceGroup.DeviceGroupID == deviceGroupDestination)
-                {
-                    deviceGroup.IndividualDevices.Add(deviceToMove);
-                    deviceGroup.modificationHistory.Add("Transferred Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " to current Device Group of: " + deviceGroup.DeviceGroupName);
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Transferred Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " to current Device Group of: " + deviceGroup.DeviceGroupName);
-                    Console.ResetColor();
-                }
+                devicegroup.printGroup();
             }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("================PRINTING TREE=================");
+            Console.ResetColor();
         }
 
         public void initialInsert()
@@ -151,7 +140,7 @@ namespace ManagerConsoleApp
                         speakerToChange.changeVolume((float)rand.NextDouble());
                         break;
                 }
-                changeDeviceGroupForDevice(deviceGroup.DeviceGroupID, DeviceGroupList[^1].DeviceGroupID, deviceGroup.IndividualDevices[rand.Next(0, deviceGroup.IndividualDevices.Count-1)]);
+                deviceGroup.changeDeviceGroupForDevice(deviceGroup.DeviceGroupID, DeviceGroupList[^1].DeviceGroupID, deviceGroup.IndividualDevices[rand.Next(0, deviceGroup.IndividualDevices.Count - 1)]);
             }
         }
 
@@ -177,8 +166,12 @@ namespace ManagerConsoleApp
                     changeHistory.Add("Removed group " + group + " from root");
                     Console.WriteLine("Removed group " + group + " from root");
                     Console.ResetColor();
+                    break;
                 }
             }
+            printTree();
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            Console.ReadLine();
         }
     }
 }

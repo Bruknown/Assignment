@@ -25,6 +25,9 @@ namespace ManagerConsoleApp.DeviceTypes
             Console.WriteLine(modificationString);
             Console.ResetColor();
             Message = newMessage;
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            printCurrentState();
+            Console.ReadLine();
         }
     }
 }

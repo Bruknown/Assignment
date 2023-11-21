@@ -28,6 +28,9 @@ namespace ManagerConsoleApp.DeviceTypes
             Console.WriteLine(modificationString);
             AccessCardNumber = newCardNumberInput;
             Console.ResetColor();
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            printCurrentState();
+            Console.ReadLine();
         }
 
         public void AcessCardValidation(string acessCardNumber)
@@ -36,6 +39,13 @@ namespace ManagerConsoleApp.DeviceTypes
             if (formattedAcessCard.Length % 2 == 0 && formattedAcessCard.Length <= 16 && verifyHexadecimal(formattedAcessCard))
             {
                 ReserveBytesAndPad(formattedAcessCard);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ACCESSCODE IS IN THE WRONG FORMAT, PRESS ENTER TO CONTINUE");
+                Console.ReadLine();
+                Console.ResetColor();
             }
 
         }

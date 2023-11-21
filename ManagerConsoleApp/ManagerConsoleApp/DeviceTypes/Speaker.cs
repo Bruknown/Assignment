@@ -28,6 +28,9 @@ namespace ManagerConsoleApp.DeviceTypes
             Console.WriteLine(modificationString);
             Sound = newSoundType;
             Console.ResetColor();
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            printCurrentState();
+            Console.ReadLine();
         }
 
         public void changeVolume(float newVolume)
@@ -38,6 +41,9 @@ namespace ManagerConsoleApp.DeviceTypes
             Console.WriteLine(modificationString);
             Volume = newVolume;
             Console.ResetColor();
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            printCurrentState();
+            Console.ReadLine();
         }
 
         public enum soundStates

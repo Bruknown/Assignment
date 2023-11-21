@@ -1,6 +1,7 @@
 ﻿using ManagerConsoleApp.DeviceTypes;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ManagerConsoleApp
@@ -20,26 +21,15 @@ namespace ManagerConsoleApp
             DeviceGroupID = deviceGroupID;
             modificationHistory = groupHistory;
         }
-        public void modifyDevice(IndividualDevice deviceToChange)
+        public void modifyDevice(string Decision, IndividualDevice deviceToChange, int originGroup)
         {
-            string decision = "";
+            string decision = Decision;
             bool isValid;
 
             switch (deviceToChange.Type)
             {
                 case DeviceTypes.Speaker:
                     Speaker speaker = deviceToChange as Speaker;
-                    Console.WriteLine("1. Speaker Name");
-                    Console.WriteLine("2. Speaker Volume");
-                    Console.WriteLine("3. Speaker Type");
-                    Console.WriteLine("4. Return");
-                    isValid = false;
-                    while (!isValid)
-                    {
-                        decision = Console.ReadLine();
-                        if (int.TryParse(decision, out int result))
-                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 5) ? true : false;
-                    }
                     switch (int.Parse(decision))
                     {
                         case 1:
@@ -61,22 +51,34 @@ namespace ManagerConsoleApp
                             speaker.changeSoundType(soundStateDefine());
                             break;
                         case 4:
-                            return;
+                            isValid = false;
+                            int choiceAmmount = -1;
+                            while (!isValid)
+                            {
+                                Console.WriteLine("What group would you like to transfer this Device to?");
+                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
+                                {
+                                    choiceAmmount += 1;
+                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
+                                }
+                                decision = Console.ReadLine();
+                                if (!int.TryParse(decision, out int result))
+                                    break;
+
+                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
+                                if (isValid)
+                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, speaker);
+
+                            }
+                            break;
+                        case 5:
+                            speaker.printHistory();
+                            break;
                     }
 
                     break;
                 case DeviceTypes.LedPanel:
                     LedPanel panel = deviceToChange as LedPanel;
-                    Console.WriteLine("1. LED Panel Name");
-                    Console.WriteLine("2. LED Panel Message");
-                    Console.WriteLine("3. Return");
-                    isValid = false;
-                    while (!isValid)
-                    {
-                        decision = Console.ReadLine();
-                        if (int.TryParse(decision, out int result))
-                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 4) ? true : false;
-                    }
                     switch (int.Parse(decision))
                     {
                         case 1:
@@ -88,22 +90,34 @@ namespace ManagerConsoleApp
                             panel.changeMessage(Console.ReadLine());
                             break;
                         case 3:
-                            return;
+                            isValid = false;
+                            int choiceAmmount = -1;
+                            while (!isValid)
+                            {
+                                Console.WriteLine("What group would you like to transfer this Device to?");
+                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
+                                {
+                                    choiceAmmount += 1;
+                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
+                                }
+                                decision = Console.ReadLine();
+                                if (!int.TryParse(decision, out int result))
+                                    break;
+
+                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
+                                if (isValid)
+                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, panel);
+
+                            }
+                            break;
+                        case 4:
+                            panel.printHistory();
+                            break;
                     }
 
                     break;
                 case DeviceTypes.CardReader:
                     CardReader reader = deviceToChange as CardReader;
-                    Console.WriteLine("1. Card Reader Name");
-                    Console.WriteLine("2. Card Reader Code");
-                    Console.WriteLine("3. Return");
-                    isValid = false;
-                    while (!isValid)
-                    {
-                        decision = Console.ReadLine();
-                        if (int.TryParse(decision, out int result))
-                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 4) ? true : false;
-                    }
                     switch(int.Parse(decision))
                     {
                         case 1:
@@ -115,21 +129,36 @@ namespace ManagerConsoleApp
                             reader.AcessCardValidation(Console.ReadLine());
                             break;
                         case 3:
-                            return;
+                            isValid = false;
+                            int choiceAmmount = -1;
+                            while (!isValid)
+                            {
+                                Console.WriteLine("What group would you like to transfer this Device to?");
+                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
+                                {
+                                    choiceAmmount += 1;
+                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
+                                }
+                                decision = Console.ReadLine();
+                                if (!int.TryParse(decision, out int result))
+                                    break;
+
+                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
+                                if (isValid)
+                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, reader);
+
+                            }
+                            break;
+                        case 4:
+                            reader.AcessCardValidation(reader.AccessCardNumber);
+                            break;
+                        case 5: 
+                            reader.printHistory();
+                            break;
                     }
                     break;
                 case DeviceTypes.Door:
                     Door door = deviceToChange as Door;
-                    Console.WriteLine("1. Door Name");
-                    Console.WriteLine("2. Door Status");
-                    Console.WriteLine("3. Return");
-                    isValid = false;
-                    while (!isValid)
-                    {
-                        decision = Console.ReadLine();
-                        if (int.TryParse(decision, out int result))
-                            isValid = (int.Parse(decision) > 0 && int.Parse(decision) < 3) ? true : false;
-                    }
                     switch (int.Parse(decision))
                     {
                         case 1:
@@ -166,11 +195,63 @@ namespace ManagerConsoleApp
                             }
                             break;
                         case 3:
-                            return;
+                            isValid = false;
+                            int choiceAmmount = -1;
+                            while (!isValid)
+                            {
+                                Console.WriteLine("What group would you like to transfer this Device to?");
+                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
+                                {
+                                    choiceAmmount += 1;
+                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
+                                }
+                                decision = Console.ReadLine();
+                                if (!int.TryParse(decision, out int result))
+                                    break;
+
+                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
+                                if (isValid)
+                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, door);
+
+                            }
+                            break;
+                        case 4:
+                            door.printHistory();
+                            break;
                     }
                     break;
             }
         }
+
+
+        public void changeDeviceGroupForDevice(int deviceGroupOrigin, int deviceGroupDestination, IndividualDevice deviceToMove)
+        {
+            foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
+            {
+                if (deviceGroup.DeviceGroupID == deviceGroupOrigin)
+                {
+                    deviceGroup.removeDevice(deviceToMove.DeviceID);
+                    deviceGroup.modificationHistory.Add("Changed Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " from Device group of: " + deviceGroup.DeviceGroupName);
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Changed Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " from Device group of: " + deviceGroup.DeviceGroupName);
+                    Console.ResetColor();
+                }
+                if (deviceGroup.DeviceGroupID == deviceGroupDestination)
+                {
+                    deviceGroup.IndividualDevices.Add(deviceToMove);
+                    deviceGroup.modificationHistory.Add("Transferred Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " to current Device Group of: " + deviceGroup.DeviceGroupName);
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Transferred Device Group for the Device: " + deviceToMove.Name + " of ID: " + deviceToMove.DeviceID + " to current Device Group of: " + deviceGroup.DeviceGroupName);
+                    Console.ResetColor();
+                }
+            }
+            Root.printTree();
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            Console.ReadLine();
+        }
+
         public void addDeviceByUser()
         {
             string deviceChoice = "";
@@ -183,9 +264,10 @@ namespace ManagerConsoleApp
                 Console.WriteLine("3. Door");
                 Console.WriteLine("4. CardReader");
                 deviceChoice = Console.ReadLine();
-                if (int.TryParse(deviceChoice, out int result))
-                    break;
-                correctInput = (int.Parse(deviceChoice) < 5 && int.Parse(deviceChoice) > 0)? true : false;
+                if (!int.TryParse(deviceChoice, out int result))
+                    correctInput = false;
+                else
+                    correctInput = (int.Parse(deviceChoice) < 5 && int.Parse(deviceChoice) > 0)? true : false;
             }
 
             Console.WriteLine("Please designate a name for the new device: ");
@@ -221,6 +303,8 @@ namespace ManagerConsoleApp
             modificationHistory.Add(modificationString);
             IndividualDevices.Add(newDevice);
             Console.ResetColor();
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            Console.ReadLine();
         }
         
         private Speaker.soundStates soundStateDefine()
@@ -234,9 +318,10 @@ namespace ManagerConsoleApp
                 Console.WriteLine("2. Alarm");
                 Console.WriteLine("3. None");
                 speakerFunction = Console.ReadLine();
-                if (int.TryParse(speakerFunction, out int result))
-                    break;
-                correctInput = (int.Parse(speakerFunction) < 4 && int.Parse(speakerFunction) > 0) ? true : false;
+                if (!int.TryParse(speakerFunction, out int result))
+                    correctInput = false;
+                else
+                    correctInput = (int.Parse(speakerFunction) < 4 && int.Parse(speakerFunction) > 0) ? true : false;
             }
             Speaker.soundStates speakerState = Speaker.soundStates.None;
             switch (int.Parse(speakerFunction))
@@ -254,38 +339,15 @@ namespace ManagerConsoleApp
 
         public void printGroup()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("================PRINTING GROUP=================");
             foreach (IndividualDevice device in IndividualDevices)
             {
-                Console.WriteLine("--------------------------------------------");
-                Console.WriteLine("DEVICE NAME: " + device.Name);
-                Console.WriteLine("DEVICE ID: " + device.DeviceID);
-                Console.WriteLine("DEVICE TYPE: " + device.Type.ToString());
-                switch (device.Type)
-                {
-                    case DeviceTypes.Speaker:
-                        Speaker speaker = device as Speaker;
-                        Console.WriteLine("SPEAKER MODE: " + speaker.Sound.ToString());
-                        Console.WriteLine("SPEAKER VOLUME: " + speaker.Volume);
-                        break;
-                    case DeviceTypes.CardReader:
-                        CardReader cardReader = device as CardReader;
-                        Console.WriteLine("CARDREADER CODE: " + cardReader.AccessCardNumber);
-                        Console.WriteLine("Validating Code...");
-                        cardReader.AcessCardValidation(cardReader.AccessCardNumber);
-                        Console.WriteLine("CARDREADER CODE: " + cardReader.AccessCardNumber);
-                        break;
-                    case DeviceTypes.LedPanel:
-                        LedPanel ledpanel = device as LedPanel;
-                        Console.WriteLine("PANEL MESSAGE: " + ledpanel.Message);
-                        break;
-                    case DeviceTypes.Door:
-                        Door door = device as Door;
-                        Console.WriteLine("DOOR STATUS: hey this is a todo still");
-                        break;
-
-                }
-                Console.WriteLine("--------------------------------------------");
+                device.printCurrentState();
             }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("================PRINTING GROUP=================");
+            Console.ResetColor();
         }
 
         public void removeDevice(int deviceID)
@@ -300,6 +362,8 @@ namespace ManagerConsoleApp
                     Console.WriteLine(modificationString);
                     Console.ResetColor();
                     IndividualDevices.Remove(device);
+                    Console.WriteLine("PRESS ENTER TO CONTINUE");
+                    Console.ReadLine();
                     return;
                 }
             }

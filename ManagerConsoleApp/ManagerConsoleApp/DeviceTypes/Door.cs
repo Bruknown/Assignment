@@ -33,6 +33,9 @@ namespace ManagerConsoleApp.DeviceTypes
             Console.WriteLine(changeHistoryString);
             Console.ResetColor();
             State = newState;
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            printCurrentState();
+            Console.ReadLine();
         }
     }
 }
