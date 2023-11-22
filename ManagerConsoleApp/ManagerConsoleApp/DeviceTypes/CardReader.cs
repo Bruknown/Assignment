@@ -38,6 +38,10 @@ namespace ManagerConsoleApp.DeviceTypes
             string formattedAcessCard = RemoveWhitespace(acessCardNumber).ToUpper();
             if (formattedAcessCard.Length % 2 == 0 && formattedAcessCard.Length <= 16 && verifyHexadecimal(formattedAcessCard))
             {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("ACCESSCODE IS IN THE CORRECT FORMAT, PRESS ENTER TO CONTINUE");
+                Console.ReadLine();
+                Console.ResetColor();
                 ReserveBytesAndPad(formattedAcessCard);
             }
             else

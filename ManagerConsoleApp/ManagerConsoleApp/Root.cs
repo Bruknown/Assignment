@@ -37,9 +37,11 @@ namespace ManagerConsoleApp
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("================PRINTING TREE=================");
             Console.ResetColor();
+            Console.WriteLine("TREE HAS BEEN SHOWN, PRESS ENTER TO CONTINUE");
+            Console.ReadLine();
         }
 
-        public void initialInsert()
+        private void initialInsert()
         {
             Random rand = new Random();
             string[] hexadecimalArray =
@@ -83,6 +85,7 @@ namespace ManagerConsoleApp
 
                 deviceListToAdd.Add(new Door(DeviceGroup.DeviceTypes.Door, ++currentDeviceIdIndex, "Obligatory entrance door", Door.PossibleStates.Locked));
                 changeList.Add("Added " + deviceListToAdd.Last().Type.ToString());
+
 
                 if (rand.Next(1, 11) > 5)
                 {
@@ -148,7 +151,7 @@ namespace ManagerConsoleApp
         {
             Console.WriteLine("Please provide a name for the device group: ");
             string nameInput = Console.ReadLine();
-            DeviceGroupList.Add(new DeviceGroup(new List<IndividualDevice>(), nameInput, (short)(DeviceGroupList.Count+1), new List<string>()));
+            DeviceGroupList.Add(new DeviceGroup(new List<IndividualDevice>(), nameInput, ++currentDeviceGroupIdIndex, new List<string>()));
 
             Console.ForegroundColor = ConsoleColor.Green;
             changeHistory.Add("Added Device Group of name: " + nameInput);

@@ -28,7 +28,7 @@ namespace ManagerConsoleApp
         public void printCurrentState()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("=============OBJECT STATE=============");
+            Console.WriteLine("=============OBJECT " + Name +  "=============");
             Console.WriteLine("Object Type: " + Type);
             Console.WriteLine("Object Name: " + Name);
             Console.WriteLine("Object ID: " + DeviceID);
@@ -57,11 +57,14 @@ namespace ManagerConsoleApp
 
         public void printHistory()
         {
-            foreach(string history in modificationHistory)
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("COMMENCING HISTORY PRINT");
+            foreach (string history in modificationHistory)
             {
                 Console.WriteLine(history);
             }
             Console.WriteLine("END OF HISTORY, press enter to continue");
+            Console.ResetColor();
             Console.ReadLine();
         }
     }

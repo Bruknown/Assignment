@@ -51,25 +51,7 @@ namespace ManagerConsoleApp
                             speaker.changeSoundType(soundStateDefine());
                             break;
                         case 4:
-                            isValid = false;
-                            int choiceAmmount = -1;
-                            while (!isValid)
-                            {
-                                Console.WriteLine("What group would you like to transfer this Device to?");
-                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
-                                {
-                                    choiceAmmount += 1;
-                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
-                                }
-                                decision = Console.ReadLine();
-                                if (!int.TryParse(decision, out int result))
-                                    break;
-
-                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
-                                if (isValid)
-                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, speaker);
-
-                            }
+                            changeDeviceGroupUserMethod(originGroup, speaker);
                             break;
                         case 5:
                             speaker.printHistory();
@@ -90,25 +72,7 @@ namespace ManagerConsoleApp
                             panel.changeMessage(Console.ReadLine());
                             break;
                         case 3:
-                            isValid = false;
-                            int choiceAmmount = -1;
-                            while (!isValid)
-                            {
-                                Console.WriteLine("What group would you like to transfer this Device to?");
-                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
-                                {
-                                    choiceAmmount += 1;
-                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
-                                }
-                                decision = Console.ReadLine();
-                                if (!int.TryParse(decision, out int result))
-                                    break;
-
-                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
-                                if (isValid)
-                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, panel);
-
-                            }
+                            changeDeviceGroupUserMethod(originGroup, panel);
                             break;
                         case 4:
                             panel.printHistory();
@@ -129,25 +93,7 @@ namespace ManagerConsoleApp
                             reader.AcessCardValidation(Console.ReadLine());
                             break;
                         case 3:
-                            isValid = false;
-                            int choiceAmmount = -1;
-                            while (!isValid)
-                            {
-                                Console.WriteLine("What group would you like to transfer this Device to?");
-                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
-                                {
-                                    choiceAmmount += 1;
-                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
-                                }
-                                decision = Console.ReadLine();
-                                if (!int.TryParse(decision, out int result))
-                                    break;
-
-                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
-                                if (isValid)
-                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, reader);
-
-                            }
+                            changeDeviceGroupUserMethod(originGroup, reader);
                             break;
                         case 4:
                             reader.AcessCardValidation(reader.AccessCardNumber);
@@ -195,31 +141,35 @@ namespace ManagerConsoleApp
                             }
                             break;
                         case 3:
-                            isValid = false;
-                            int choiceAmmount = -1;
-                            while (!isValid)
-                            {
-                                Console.WriteLine("What group would you like to transfer this Device to?");
-                                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
-                                {
-                                    choiceAmmount += 1;
-                                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
-                                }
-                                decision = Console.ReadLine();
-                                if (!int.TryParse(decision, out int result))
-                                    break;
-
-                                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
-                                if (isValid)
-                                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, door);
-
-                            }
+                            changeDeviceGroupUserMethod(originGroup, door);
                             break;
                         case 4:
                             door.printHistory();
                             break;
                     }
                     break;
+            }
+        }
+
+        private void changeDeviceGroupUserMethod(int originGroup, IndividualDevice device)
+        {
+            bool isValid = false;
+            int choiceAmmount = -1;
+            while (!isValid)
+            {
+                Console.WriteLine("What group would you like to transfer this Device to?");
+                foreach (DeviceGroup deviceGroup in Root.DeviceGroupList)
+                {
+                    choiceAmmount += 1;
+                    Console.WriteLine(choiceAmmount + ": Device Group " + deviceGroup.DeviceGroupName + " ID: " + deviceGroup.DeviceGroupID);
+                }
+                string decision = Console.ReadLine();
+                if (!int.TryParse(decision, out int result))
+                    break;
+
+                isValid = (int.Parse(decision) < Root.DeviceGroupList.Count && int.Parse(decision) >= 0) ? true : false;
+                if (isValid)
+                    changeDeviceGroupForDevice(originGroup, Root.DeviceGroupList[int.Parse(decision)].DeviceGroupID, device);
             }
         }
 
@@ -247,6 +197,8 @@ namespace ManagerConsoleApp
                     Console.ResetColor();
                 }
             }
+            Console.WriteLine("PRESS ENTER TO CONTINUE");
+            Console.ReadLine();
             Root.printTree();
             Console.WriteLine("PRESS ENTER TO CONTINUE");
             Console.ReadLine();
@@ -340,13 +292,13 @@ namespace ManagerConsoleApp
         public void printGroup()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("================PRINTING GROUP=================");
+            Console.WriteLine("================PRINTING " + DeviceGroupName + "=================");
             foreach (IndividualDevice device in IndividualDevices)
             {
                 device.printCurrentState();
             }
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("================PRINTING GROUP=================");
+            Console.WriteLine("================PRINTING " + DeviceGroupName + "=================");
             Console.ResetColor();
         }
 
